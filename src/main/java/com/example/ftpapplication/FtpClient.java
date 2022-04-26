@@ -21,6 +21,7 @@ public class FtpClient {
         int port = 21;
         String user = "testftp_guest";
         String pass = "12345";
+        ftpClient.setControlEncoding("UTF-8");
 
 //        FTPClient ftpClient = new FTPClient();
 
@@ -54,12 +55,13 @@ public class FtpClient {
 
             if(file.isDirectory()){
 
-                getFiles(path + "/" + file.getName());
                 gfiles+= file.getName() + "\n";
+                getFiles(path + "/" + file.getName());
             }
             else {
                 totalSize += file.getSize();
-                gfiles+= file.getName() + "\n";
+                gfiles+= file.getName() + " " + file.getSize() + "\n";
+
             }
         }
     }
