@@ -1,47 +1,67 @@
 package com.example.ftpapplication;
 
-//import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
-
 import java.io.IOException;
-import java.util.logging.Logger;
 
 
 public class FtpClient {
-    private static Logger log = Logger.getLogger(FtpClient.class.getName());
 
+    FTPClient ftpClient = new FTPClient();
+    //Необходимые структуры как хранить общ
+    public int totalSize = 0;
+    public String gfiles = "";
+//    public String path = "";
 
     public FtpClient() throws IOException {
-        FTPClient ftpClient = new FTPClient();
+
+        String host = "91.222.128.11";
+        int port = 21;
+        String user = "testftp_guest";
+        String pass = "12345";
+
+//        FTPClient ftpClient = new FTPClient();
 
         try{
-            log.info("Some message11111111111");
-            ftpClient.connect("91.222.128.11", 21);
-            ftpClient.login("testftp_guest", "12345");
+            ftpClient.connect(host, port);
+            ftpClient.login(user, pass);
+
             int replyCode = ftpClient.getReplyCode();
             if (!FTPReply.isPositiveCompletion(replyCode)) {
-                log.info("Some message");
+                throw new IOException("Exception in connecting to FTP Server");
             }
-
-
-//            ftpClient.logout();
+            //Поиск всех файлов
+            getFiles("");
         }
-        catch (Exception exception){
-
+        catch (Exception e){
+            e.printStackTrace();
         }
 
 //        ftpClient.connect(hostname, port);
 //        ftpClient.login(username, password);
 //        System.out.print(ftpClient.getReplyString());
 
-//        String server = "www.yourserver.net";
-//        int port = 21;
-//        String user = "username";
-//        String pass = "password";
+
+    }
+    //Передаем ""изначально
+
+    public void getFiles(String path) throws IOException {
+
+        FTPFile[] ftpFiles = ftpClient.listFiles(path);
+        for (FTPFile file : ftpFiles){
+
+            if(file.isDirectory()){
+
+                getFiles(path + "/" + file.getName());
+                gfiles+= file.getName() + "\n";
+            }
+            else {
+                totalSize += file.getSize();
+                gfiles+= file.getName() + "\n";
+            }
+        }
     }
 
 
