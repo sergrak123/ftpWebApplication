@@ -5,6 +5,9 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 
 public class FtpClient {
@@ -36,15 +39,18 @@ public class FtpClient {
 
             boolean success = ftpClient.login(user, pass);
             showServerReply(ftpClient);
-
             if (!success) {
                 throw new IOException("Exception in login to FTP Server");
             }
-
             //Поиск всех файлов
             getFiles("");
+
+
+
+
+
         }
-        catch (Exception e){
+        catch (IOException e){
             e.printStackTrace();
         }
 
@@ -54,7 +60,6 @@ public class FtpClient {
 
 
     }
-
 
     //Передаем "" изначально
 
@@ -78,6 +83,12 @@ public class FtpClient {
 
     private void showServerReply(FTPClient ftpClient) {
 
+        String[] replies = ftpClient.getReplyStrings();
+        if (replies != null && replies.length > 0) {
+            for (String reply : replies) {
+                System.out.println("SERVER: " + reply);
+            }
+        }
     }
 
 

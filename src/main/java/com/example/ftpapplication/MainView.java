@@ -13,7 +13,9 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPFile;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 
 
 @Route
@@ -22,39 +24,56 @@ public class MainView extends VerticalLayout {
     public MainView () throws IOException {
 
         add(new H1("Ftp Web App"));
+        add(new H3("Starting server..."));
 
-        FTPClient ftpClient = new FTPClient();
         try{
-            add(new H3("Starting server..."));
 
-            ftpClient.connect("91.222.128.11", 21);
-            ftpClient.login("testftp_guest", "12345");
+            String ftpUrl = "ftp://%s:%s@%s/";
+            ftpUrl = String.format(ftpUrl, "testftp_guest", "12345", "91.222.128.11");
+            URL url = new URL(ftpUrl);
+            URLConnection conn = url.openConnection();
+            InputStream inputStream = conn.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-            
-            int replyCode = ftpClient.getReplyCode();
-            add(new H3(String.valueOf(replyCode)));
-
-            if (!FTPReply.isPositiveCompletion(replyCode)) {
-                add(new H2("!!!"));///
+            String line = null;
+            System.out.println("--- START ---");
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
             }
-            
-            FtpClient ftpClient1 = new FtpClient();
-            add(new Span(String.valueOf(ftpClient1.totalSize)));
+            System.out.println("--- END ---");
 
-            FTPFile[] ftpFiles = ftpClient.listFiles("");
-            String info = "File number:" + ftpFiles.length + "\n"
-                    + ftpFiles[0].getName() + "\n"
-                    + ftpFiles[0].getGroup()+ "\n"
-                    + ftpFiles[0].getLink()+ "\n"
-                    + ftpFiles[0].getSize()+ "\n"
-                    + ftpFiles[0].getType()+ "\n"
-                    + ftpFiles[0].isDirectory()+ "\n"
-                    + ftpFiles[0].isFile()+ "\n";
+//            inputStream.close();
+//            OutputStream outputStream = conn.getOutputStream();
+
+//            conn.connect();
+//            TextArea tx = new TextArea();
+//            tx.setValue(is.toString());
+//            add(tx);
+//            System.out.println(is.toString());
+//            System.out.println(conn.getInputStream().toString());
+//            System.out.println(conn.getContent().toString());
 
 
-            TextArea tx = new TextArea();
-            tx.setValue(ftpClient1.gfiles);
-            add(tx);
+
+
+
+
+
+
+
+
+//            FtpClient ftpClient1 = new FtpClient();
+//            add(new Span(String.valueOf(ftpClient1.totalSize)));
+//
+//            TextArea tx = new TextArea();
+//            tx.setValue(ftpClient1.gfiles);
+//            add(tx);
+
+
+
+
+
+
 //            return Arrays.stream(files)
 //                    .map(FTPFile::getName)
 //                    .collect(Collectors.toList());
