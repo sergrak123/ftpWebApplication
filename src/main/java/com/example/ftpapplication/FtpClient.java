@@ -26,13 +26,21 @@ public class FtpClient {
 //        FTPClient ftpClient = new FTPClient();
 
         try{
+
             ftpClient.connect(host, port);
-            ftpClient.login(user, pass);
 
             int replyCode = ftpClient.getReplyCode();
             if (!FTPReply.isPositiveCompletion(replyCode)) {
                 throw new IOException("Exception in connecting to FTP Server");
             }
+
+            boolean success = ftpClient.login(user, pass);
+            showServerReply(ftpClient);
+
+            if (!success) {
+                throw new IOException("Exception in login to FTP Server");
+            }
+
             //Поиск всех файлов
             getFiles("");
         }
@@ -46,7 +54,9 @@ public class FtpClient {
 
 
     }
-    //Передаем ""изначально
+
+
+    //Передаем "" изначально
 
     public void getFiles(String path) throws IOException {
 
@@ -64,6 +74,10 @@ public class FtpClient {
 
             }
         }
+    }
+
+    private void showServerReply(FTPClient ftpClient) {
+
     }
 
 
