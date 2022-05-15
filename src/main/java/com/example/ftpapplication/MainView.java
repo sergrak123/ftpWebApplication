@@ -25,29 +25,15 @@ public class MainView extends VerticalLayout {
 
     public MainView() throws IOException {
 
-//        String host = "91.222.128.11";
-//        int port = 21;
-//        String user = "testftp_guest";
-//        String pass = "12345";
-//
-//        FTPData ftp = new FTPData(host, port, user, pass);
-//        ftp.getAllFiles("");
-//
-//        int totalSize = 0;
-//        for (String type : ftp.typeList.keySet()) {
-//
-//            int typeSize = ftp.typeList.get(type);
-//            String formatSize = FTPData.formatFileSize(typeSize);
-//            totalSize += typeSize;
-//            System.out.println(type + " " + formatSize);
-//        }
-//        System.out.println(FTPData.formatFileSize(totalSize));
-
 
         //frontend
         TextField hostField = new TextField();
         TextField userField = new TextField();
         TextField passField = new TextField();
+
+        hostField.setValue("91.222.128.11");
+        userField.setValue("testftp_guest");
+        passField.setValue("12345");
 
         hostField.setLabel("Host");
         userField.setLabel("Username");
@@ -60,9 +46,6 @@ public class MainView extends VerticalLayout {
         HorizontalLayout hl = new HorizontalLayout(hostField, userField, passField, findButton);
         hl.setAlignItems(Alignment.END);
 
-//        VerticalLayout vr = new VerticalLayout(new H2("Ftp Client Web App"), hl);
-//        vr.setAlignItems(Alignment.CENTER);
-//        add(vr);
 
 
         //Вывод ссылок
@@ -71,28 +54,32 @@ public class MainView extends VerticalLayout {
         UnorderedList content2 = new UnorderedList();
 
         Details details = new Details();
+        details.setWidth("450px");
+        details.setMinHeight("400px");
         details.setOpened(true);
         details.addThemeVariants(DetailsVariant.FILLED);
-        details.setSummaryText("Все файлы : ");
+        details.setSummaryText("Все файлы: ");
 
         Details details2 = new Details();
+        details2.setWidth("450px");
+        details.setMinHeight("400px");
         details2.setOpened(true);
         details2.addThemeVariants(DetailsVariant.FILLED);
-        details2.setSummaryText("Тип файла / размер файлов : ");
+        details2.setSummaryText("Расширение файла / Суммарный размер: ");
 
         HorizontalLayout hl2 = new HorizontalLayout(details, details2);
         hl2.setPadding(true);
 
 
-        VerticalLayout vr = new VerticalLayout(new H2("Ftp Client Web App"), hl, new H3(""), hl2);
+        VerticalLayout vr = new VerticalLayout(new H2("Ftp Client web app"), hl, new H3(""), hl2);
         vr.setAlignItems(Alignment.CENTER);
         add(vr);
 
         Scroller scroller = new Scroller(content);
-        scroller.setScrollDirection(Scroller.ScrollDirection.HORIZONTAL);
+        scroller.setScrollDirection(Scroller.ScrollDirection.VERTICAL);
 
         Scroller scroller2 = new Scroller(content2);
-        scroller2.setScrollDirection(Scroller.ScrollDirection.HORIZONTAL);
+        scroller2.setScrollDirection(Scroller.ScrollDirection.VERTICAL);
         findButton.addClickShortcut(Key.ENTER);
 
         findButton.addClickListener(clickEvent -> {
@@ -107,12 +94,11 @@ public class MainView extends VerticalLayout {
 
                     int fileSize = simpleFTP.fileList.get(name);
                     String formatFileSize = SimpleFTP.formatFileSize(fileSize);
-                    content.add(new ListItem(name + formatFileSize));
+                    content.add(new ListItem(name + " : " + formatFileSize));
                 }
                 scroller.setContent(content);
                 details.setContent(scroller);
-                details.setSummaryText("Все файлы : " + simpleFTP.fileList.size());
-
+                details.setSummaryText("Все файлы: " + simpleFTP.fileList.size());
 
 
                 for (String type : simpleFTP.typeList.keySet()) {
@@ -121,12 +107,11 @@ public class MainView extends VerticalLayout {
                     String formatTypeSize = SimpleFTP.formatFileSize(typeSize);
                     totalSize += typeSize;
                     System.out.println(type + " " + formatTypeSize);
-                    content2.add(new ListItem(type + formatTypeSize));
+                    content2.add(new ListItem("Type: " + type + " Size: " + formatTypeSize));
                 }
-                //
-
                 scroller2.setContent(content2);
                 details2.setContent(scroller2);
+                details2.addContent(new H5("Total size: " + SimpleFTP.formatFileSize(totalSize)));
 
             } catch (IOException e) {
                 e.printStackTrace();
