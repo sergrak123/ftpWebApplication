@@ -109,6 +109,7 @@ public class MainView extends VerticalLayout {
                     System.out.println(type + " " + formatTypeSize);
                     content2.add(new ListItem("Type: " + type + " Size: " + formatTypeSize));
                 }
+
                 scroller2.setContent(content2);
                 details2.setContent(scroller2);
                 details2.addContent(new H5("Total size: " + SimpleFTP.formatFileSize(totalSize)));
