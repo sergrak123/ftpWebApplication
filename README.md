@@ -1,3 +1,3 @@
 # FtpClient
 
-![alt text](https://disk.yandex.ru/client/disk?source=main-loginmenu&ncrnd=373279&status=ok&idApp=client&dialog=slider&idDialog=%2Fdisk%2FСнимок%20экрана%202022-05-15%20203050.png)
+![alt text](https://user-images.githubusercontent.com/51461610/168483977-a6261631-630d-4654-81d5-ebb064c88791.png)
