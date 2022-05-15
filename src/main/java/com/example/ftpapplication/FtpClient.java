@@ -4,8 +4,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -13,10 +12,9 @@ import java.net.URLConnection;
 public class FtpClient {
 
     FTPClient ftpClient = new FTPClient();
-    //Необходимые структуры как хранить общ
+    //Необходимые структуры
     public int totalSize = 0;
     public String gfiles = "";
-//    public String path = "";
 
     public FtpClient() throws IOException {
 
@@ -25,8 +23,6 @@ public class FtpClient {
         String user = "testftp_guest";
         String pass = "12345";
         ftpClient.setControlEncoding("UTF-8");
-
-//        FTPClient ftpClient = new FTPClient();
 
         try{
 
@@ -44,20 +40,10 @@ public class FtpClient {
             }
             //Поиск всех файлов
             getFiles("");
-
-
-
-
-
         }
         catch (IOException e){
             e.printStackTrace();
         }
-
-//        ftpClient.connect(hostname, port);
-//        ftpClient.login(username, password);
-//        System.out.print(ftpClient.getReplyString());
-
 
     }
 
@@ -90,6 +76,5 @@ public class FtpClient {
             }
         }
     }
-
 
 }
